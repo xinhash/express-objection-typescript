@@ -8,6 +8,17 @@
 4. pg
 5. Jest
 
+### How to run the project
+
+```js
+cd /project
+mv .env.example .env
+createdb sample_db // postgres. You may need to modify knexfile.ts if using other database
+yarn serve // runs development server
+yarn build && yarn start // runs production serve
+yarn test // runs jest
+```
+
 ### Feature
 
 - [x] TS compilation

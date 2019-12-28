@@ -1,0 +1,25 @@
+@url = http://localhost:8080
+
+// @name register
+POST {{url}}/user/register
+content-type: application/json
+
+{
+    "user": {
+        "username": "Shubham",
+        "email": "shubham@email.com",
+        "password": "password"
+    }
+}
+
+###
+# @name login
+POST {{url}}/user/login
+content-type: application/json
+
+{
+    "user": {
+        "email": "shubham@email.com",
+        "password": "password"
+    }
+}

@@ -1,0 +1,80 @@
+{
+  "name": "node-starter-basic",
+  "version": "1.0.0",
+  "description": "A best starter kit for node js with support for redis, postgres and JWT",
+  "main": "index.js",
+  "author": "Shubham Sinha",
+  "license": "MIT",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node dist/app",
+    "serve": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register ./app",
+    "test": "cross-env NODE_ENV=staging jest --testTimeout=10000 --detectOpenHandles",
+    "migrate": "knex migrate:latest",
+    "prettier": "prettier --write \"./**/*.{ts,tsx,json, js}\"",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.2",
+    "@types/faker": "^4.1.8",
+    "@types/hapi__joi": "^16.0.4",
+    "@types/jest": "^24.0.25",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "^13.1.0",
+    "@types/supertest": "^2.0.8",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-typescript": "^3.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "express-list-endpoints": "^4.0.1",
+    "faker": "^4.1.0",
+    "git-cz": "^3.3.0",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.5.0",
+    "pm2": "^4.2.1",
+    "prettier": "^1.19.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.2.0",
+    "ts-node": "^8.5.4",
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typescript": "^3.7.4"
+  },
+  "dependencies": {
+    "module-alias": "^2.2.2",
+    "@hapi/joi": "^16.1.8",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "glob-fs": "^0.1.7",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.4",
+    "lodash": "^4.17.15",
+    "morgan": "^1.9.1",
+    "objection": "^2.0.10",
+    "objection-password": "^2.0.0",
+    "pg": "^7.15.1",
+    "status-code-enum": "^1.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "uuid": "^3.3.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,md,yml,ts}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/git-cz"
+    }
+  }
+}

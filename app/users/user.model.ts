@@ -10,13 +10,8 @@ export default class User extends Password({ passwordField: 'password' })(
   password: string
   username: string
 
-  static get tableName() {
-    return 'users'
-  }
-
-  static get columnNameMappers() {
-    return snakeCaseMappers()
-  }
+  public static tableName = 'users'
+  public static columnNameMappers = snakeCaseMappers()
 
   static get jsonSchema() {
     return {

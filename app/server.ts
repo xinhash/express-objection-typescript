@@ -4,7 +4,7 @@ import glob from 'glob-fs'
 import morgan from 'morgan'
 import jwt from 'express-jwt'
 import cors from 'cors'
-import { NODE_ENV } from './typings/shared'
+import { NODE_ENV } from './types/common'
 const app = express()
 app.use(bodyParser.json())
 

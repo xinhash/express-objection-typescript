@@ -1,9 +1,10 @@
 import { generateToken, verifyToken } from '@app/utils/token'
-import { RequestHandler } from 'express'
 import { UniqueViolationError } from 'objection'
 import { StatusCode } from 'status-code-enum'
 import User from './user.model'
+import { RequestHandler } from 'express'
 import { LoginUserSchema, RegisterUserSchema } from './user.validator'
+import Rbac from '@app/helpers/Rbac'
 
 export const RegisterHandler: RequestHandler = async (req, res) => {
   try {
@@ -46,7 +47,9 @@ export const LoginHandler: RequestHandler = async (req, res) => {
         const passwordMatches = await user.verifyPassword(value.password)
         if (passwordMatches) {
           // send JWT token
-          const token = generateToken({ data: user.id })
+          const token = generateToken({
+            data: { id: user.id, role: user.role }
+          })
           return res
             .status(StatusCode.SuccessOK)
             .send({ message: 'User has been successfully registered', token })
@@ -72,10 +75,29 @@ export const ProfileHandler: RequestHandler = async (req, res) => {
   const user = await User.query().findById(tk.data)
   if (user instanceof User) {
     res.status(StatusCode.SuccessOK).json({
-      data: user,
-      message: 'Matching profile found'
+      data: user
     })
   } else {
     // Cancel jwt and send response aunauthorized
+  }
+}
+
+export const ShowAllHandler: RequestHandler = async (req, res) => {
+  const permission = Rbac.can(req.user.data.role).readAny('account')
+  if (permission.granted) {
+    const users = await User.query()
+    if (users?.[0] instanceof User) {
+      res.status(StatusCode.SuccessOK).json({
+        data: users
+      })
+    } else {
+      res.status(StatusCode.SuccessOK).json({
+        data: []
+      })
+    }
+  } else {
+    res.status(StatusCode.ClientErrorForbidden).json({
+      message: 'Unauthorized access denied'
+    })
   }
 }

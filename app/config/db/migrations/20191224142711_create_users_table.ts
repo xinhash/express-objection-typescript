@@ -16,8 +16,7 @@ export async function up(knex: Knex): Promise<any> {
     table
       .enu('role', ['admin', 'user', 'manager'], {
         useNative: true,
-        enumName: 'role_types',
-        existingType: true
+        enumName: 'role_types'
       })
       .defaultTo('user')
       .notNullable()
@@ -27,5 +26,6 @@ export async function up(knex: Knex): Promise<any> {
 }
 
 export async function down(knex: Knex): Promise<any> {
-  return knex.schema.dropTableIfExists('users')
+  await knex.schema.dropTableIfExists('users')
+  return knex.raw('DROP TYPE IF EXISTS role_types')
 }

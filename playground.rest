@@ -29,3 +29,9 @@ content-type: application/json
 GET {{url}}/user/profile
 content-type: application/json
 Authorization: Bearer {{login.response.body.$.token}}
+
+###
+# @name showAllUsers
+GET {{url}}/user/all
+content-type: application/json
+Authorization: Bearer {{login.response.body.$.token}}

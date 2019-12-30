@@ -1,6 +1,6 @@
 import { setupDB } from '@app/config/db/commands'
 import app from '@app/server'
-import { NODE_ENV } from '@app/typings/shared'
+import { NODE_ENV } from '@app/types/common'
 import getRandomItem from '@app/utils/common'
 import { verifyToken } from '@app/utils/token'
 import { cloneDeep } from 'lodash'

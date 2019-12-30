@@ -1,4 +1,4 @@
-import { NODE_ENV } from '@app/typings/shared'
+import { NODE_ENV } from '@app/types/common'
 import knexfile from '../../../knexfile'
 import Knex from 'knex'
 import { Model } from 'objection'

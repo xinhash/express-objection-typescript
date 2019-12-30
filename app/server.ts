@@ -4,7 +4,9 @@ import glob from 'glob-fs'
 import morgan from 'morgan'
 import jwt from 'express-jwt'
 import cors from 'cors'
+import graphqlHTTP from 'express-graphql'
 import { NODE_ENV } from './types/common'
+import graphQlSchema from './graphQlSchema'
 const app = express()
 app.use(bodyParser.json())
 
@@ -53,5 +55,13 @@ if (files) {
     }
   })
 }
+
+app.use(
+  '/graphql',
+  graphqlHTTP({
+    schema: graphQlSchema,
+    graphiql: true
+  })
+)
 
 export default app

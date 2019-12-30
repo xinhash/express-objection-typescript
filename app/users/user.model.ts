@@ -19,7 +19,7 @@ export default class User extends Password({ passwordField: 'password' })(
       required: ['username', 'email', 'password'],
 
       properties: {
-        id: { type: 'uuid', readOnly: true },
+        id: { type: 'string', format: 'uuid', readOnly: true },
         username: {
           type: 'string',
           minLength: 5,

@@ -2,11 +2,32 @@ import bodyParser from 'body-parser'
 import express from 'express'
 import glob from 'glob-fs'
 import morgan from 'morgan'
-import { NODE_ENV } from './typings/shared'
+import jwt from 'express-jwt'
+import cors from 'cors'
+import { NODE_ENV } from './types/common'
 const app = express()
 app.use(bodyParser.json())
 
 // Middlewares
+app.use(cors())
+
+app.use(
+  jwt({
+    secret: process.env.JWT_SECRET || 'secret',
+    credentialsRequired: false,
+    getToken: function fromHeaderOrQuerystring(req) {
+      if (req?.headers?.authorization?.split(' ')[0] === 'Bearer') {
+        return req.headers.authorization.split(' ')[1]
+      } else if (req.query?.token) {
+        return req.query.token
+      }
+      return null
+    }
+  }).unless({
+    path: ['/user/register', '/user/login']
+  })
+)
+
 if (process.env.NODE_ENV === NODE_ENV.development) {
   app.use(morgan('combined'))
 }

@@ -1,18 +1,31 @@
 import * as Knex from 'knex'
 
 export async function up(knex: Knex): Promise<any> {
-  return knex.schema.createTable('users', t => {
-    t.uuid('id').primary()
-    t.string('username').notNullable()
-    t.string('email').unique()
-    t.string('password').notNullable()
-    t.timestamp('createdAt').defaultTo(knex.fn.now())
-    t.timestamp('updatedAt').defaultTo(knex.fn.now())
-
-    t.index('email')
+  await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
+  return knex.schema.createTable('users', table => {
+    table
+      .uuid('id')
+      .primary()
+      .defaultTo(knex.raw('uuid_generate_v4()'))
+    table.string('username').notNullable()
+    table
+      .string('email')
+      .unique()
+      .index()
+    table.string('password').notNullable()
+    table
+      .enu('role', ['admin', 'user', 'manager'], {
+        useNative: true,
+        enumName: 'role_types'
+      })
+      .defaultTo('user')
+      .notNullable()
+      .index()
+    table.timestamps(true, true)
   })
 }
 
 export async function down(knex: Knex): Promise<any> {
-  return knex.schema.dropTableIfExists('users')
+  await knex.schema.dropTableIfExists('users')
+  return knex.raw('DROP TYPE IF EXISTS role_types')
 }

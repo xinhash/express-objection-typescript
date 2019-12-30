@@ -1,30 +1,27 @@
-import { createPassword } from '@app/utils/password'
-import { v4 as uuid } from 'uuid'
+import * as Knex from 'knex'
+import { generatePasswordHash } from 'objection-password-argon2'
 
-exports.seed = function(knex) {
+export async function seed(knex: Knex): Promise<any> {
   // Deletes ALL existing entries
   return knex('users')
     .del()
-    .then(function() {
+    .then(async () => {
       // Inserts seed entries
       return knex('users').insert([
         {
-          id: uuid(),
           username: 'Admin',
-          email: 'admin@site.com',
-          password: createPassword('password')
+          email: 'admin@email.com',
+          password: await generatePasswordHash('password')
         },
         {
-          id: uuid(),
           username: 'User',
-          email: 'user@site.com',
-          password: createPassword('password')
+          email: 'user@email.com',
+          password: await generatePasswordHash('password')
         },
         {
-          id: uuid(),
-          username: 'Shubham',
-          email: 'shubhamsinha.ss@gmail.com',
-          password: createPassword('password')
+          username: 'Manager',
+          email: 'manager@email.com',
+          password: await generatePasswordHash('password')
         }
       ])
     })

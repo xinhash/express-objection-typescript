@@ -1,4 +1,5 @@
 import Knex from 'knex'
+// import camelcaseKeys from 'camelcase-keys'
 
 export = {
   development: {
@@ -20,6 +21,13 @@ export = {
       directory: __dirname + '/app/config/db/seeds'
     },
     debug: true
+    // postProcessResponse: (result, _) => {
+    //   if (Array.isArray(result)) {
+    //     return result.map(row => camelcaseKeys(row, { deep: true }))
+    //   } else {
+    //     return camelcaseKeys(result, { deep: true })
+    //   }
+    // }
   },
 
   staging: {

@@ -1,6 +1,6 @@
 import { setupDB } from '@app/config/db/commands'
 import app from '@app/server'
-import { NODE_ENV } from '@app/typings/shared'
+import { NODE_ENV } from '@app/types/common'
 import getRandomItem from '@app/utils/common'
 import { verifyToken } from '@app/utils/token'
 import { cloneDeep } from 'lodash'
@@ -9,6 +9,7 @@ import request from 'supertest'
 describe('User endpoints', () => {
   let server
   let knex
+  let token
   const userCreds = {
     user: {
       email: 'test@test.com',
@@ -77,8 +78,22 @@ describe('User endpoints', () => {
       .send(loginCreds)
     expect(res.status).toEqual(200)
     expect(res.body).toHaveProperty('token')
-    const userId = verifyToken(res.body.token)
+    token = res.body.token
+    const userId = verifyToken(token)
     expect(userId).toHaveProperty('data')
     expect(userId.data).toBeTruthy()
+  })
+
+  it('should provide user details if authenticated', async () => {
+    const res = await request(app)
+      .get('/user/profile')
+      .set('Content-Type', 'application/json')
+      .set('Acccept', 'application/json')
+      .set('Authorization', `Bearer ${token}`)
+    expect(res.status).toEqual(200)
+    expect(res.body).toHaveProperty('data')
+    expect(res.body.data).not.toHaveProperty('password')
+    expect(res.body.data).toHaveProperty('email')
+    expect(res.body.data).toHaveProperty('username')
   })
 })

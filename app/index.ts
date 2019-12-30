@@ -5,7 +5,7 @@ import { config } from 'dotenv'
 config()
 import { setupDB } from '@app/config/db/commands'
 import server from '@app/server'
-import { NODE_ENV } from '@app/typings/shared'
+import { NODE_ENV } from '@app/types/common'
 const port = process.env.SERVER_PORT || 8080
 
 setupDB(process.env.NODE_ENV as NODE_ENV)

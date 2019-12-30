@@ -26,3 +26,5 @@ yarn test // runs jest
 - [x] Auth: Register user, Login user
 - [x] Configure Test suite
 - [x] Rest API playground
+- [x] RBAC (Role based access control)
+- [x] Graphql

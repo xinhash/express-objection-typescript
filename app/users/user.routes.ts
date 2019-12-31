@@ -3,13 +3,15 @@ import {
   LoginHandler,
   RegisterHandler,
   ProfileHandler,
-  ShowAllHandler
+  ShowAllHandler,
+  VerifyUserHandler
 } from './user.controller'
 
 const routes = express.Router()
 
 routes.post('/register', RegisterHandler)
 routes.post('/login', LoginHandler)
+routes.get('/verify/:id', VerifyUserHandler)
 routes.get('/profile', ProfileHandler)
 routes.get('/all', ShowAllHandler)
 

@@ -21,6 +21,7 @@ export async function up(knex: Knex): Promise<any> {
       .defaultTo('user')
       .notNullable()
       .index()
+    table.boolean('is_verified').defaultTo(false)
     table.timestamps(true, true)
   })
 }

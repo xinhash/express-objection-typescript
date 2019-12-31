@@ -6,16 +6,15 @@ import { verifyToken } from '@app/utils/token'
 import { cloneDeep } from 'lodash'
 import request from 'supertest'
 
-describe('User endpoints', () => {
+describe('Authentication endpoints', () => {
   let server
   let knex
-  let token
+  let authToken
+  const authUrl = '/api/v1/auth'
   const userCreds = {
-    user: {
-      email: 'test@test.com',
-      password: 'password',
-      username: 'Test User'
-    }
+    email: 'test@test.com',
+    password: 'password',
+    username: 'Test User'
   }
 
   beforeAll(async done => {
@@ -41,7 +40,7 @@ describe('User endpoints', () => {
 
   it('should register a new user', async () => {
     const res = await request(app)
-      .post('/user/register')
+      .post(`${authUrl}/register`)
       .set('Content-Type', 'application/json')
       .set('Acccept', 'application/json')
       .send(userCreds)
@@ -51,11 +50,11 @@ describe('User endpoints', () => {
 
   it('should not register user with missing details', async () => {
     const newUserCreds = cloneDeep(userCreds)
-    const inputKeys: string[] = Object.keys(newUserCreds.user)
+    const inputKeys: string[] = Object.keys(newUserCreds)
     const randomKeyToDelete: string = getRandomItem(inputKeys)
-    newUserCreds.user[randomKeyToDelete] = ''
+    newUserCreds[randomKeyToDelete] = ''
     const res = await request(app)
-      .post('/user/register')
+      .post(`${authUrl}/register`)
       .set('Content-Type', 'application/json')
       .set('Acccept', 'application/json')
       .send(newUserCreds)
@@ -66,30 +65,30 @@ describe('User endpoints', () => {
 
   it('should login user and provide them a token', async () => {
     const loginCreds = {
-      user: {
-        email: userCreds.user.email,
-        password: userCreds.user.password
-      }
+      email: userCreds.email,
+      password: userCreds.password
     }
     const res = await request(app)
-      .post('/user/login')
+      .post(`${authUrl}/login`)
       .set('Content-Type', 'application/json')
       .set('Acccept', 'application/json')
       .send(loginCreds)
     expect(res.status).toEqual(200)
     expect(res.body).toHaveProperty('token')
-    token = res.body.token
-    const userId = verifyToken(token)
-    expect(userId).toHaveProperty('data')
-    expect(userId.data).toBeTruthy()
+    authToken = res.body.token
+    const userId = verifyToken(authToken)
+    expect(userId).toHaveProperty('id')
+    expect(userId).toHaveProperty('role')
+    expect(userId).toHaveProperty('iat')
+    expect(userId).toHaveProperty('exp')
   })
 
-  it('should provide user details if authenticated', async () => {
+  it('should provide user profile details if authenticated', async () => {
     const res = await request(app)
-      .get('/user/profile')
+      .get(`${authUrl}/profile`)
       .set('Content-Type', 'application/json')
       .set('Acccept', 'application/json')
-      .set('Authorization', `Bearer ${token}`)
+      .set('Authorization', `Bearer ${authToken}`)
     expect(res.status).toEqual(200)
     expect(res.body).toHaveProperty('data')
     expect(res.body.data).not.toHaveProperty('password')

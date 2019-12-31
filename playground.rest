@@ -1,37 +1,40 @@
-@url = http://localhost:8080
+@url = http://localhost:8080/api/v1
 
 // @name register
-POST {{url}}/user/register
+POST {{url}}/auth/register
 content-type: application/json
 
 {
-    "user": {
-        "username": "Shubham",
-        "email": "shubham@email.com",
-        "password": "password"
-    }
+    "username": "Shubham",
+    "email": "shubham@email.com",
+    "password": "password"
 }
 
 ###
 # @name login
-POST {{url}}/user/login
+POST {{url}}/auth/login
 content-type: application/json
 
 {
-    "user": {
-        "email": "shubham@email.com",
-        "password": "password"
-    }
+    "email": "shubham@email.com",
+    "password": "password"
 }
 
 ###
 # @name profile
-GET {{url}}/user/profile
+GET {{url}}/auth/profile
+content-type: application/json
+Authorization: Bearer {{login.response.body.$.token}}
+
+
+###
+# @name showUsers
+GET {{url}}/users
 content-type: application/json
 Authorization: Bearer {{login.response.body.$.token}}
 
 ###
-# @name showAllUsers
-GET {{url}}/user/all
+# @name showOneUser
+GET {{url}}/users/{{showUsers.response.body.data[0].id}}
 content-type: application/json
 Authorization: Bearer {{login.response.body.$.token}}

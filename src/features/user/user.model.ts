@@ -2,6 +2,7 @@ import BaseModel from '@app/helpers/BaseModel'
 import omit from 'lodash/omit'
 import Password from 'objection-password-argon2'
 import { snakeCaseMappers } from 'objection'
+
 export default class User extends Password({ passwordField: 'password' })(
   BaseModel
 ) {

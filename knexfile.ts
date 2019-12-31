@@ -15,10 +15,10 @@ export = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: __dirname + '/app/config/db/migrations'
+      directory: __dirname + '/src/config/db/migrations'
     },
     seeds: {
-      directory: __dirname + '/app/config/db/seeds'
+      directory: __dirname + '/src/config/db/seeds'
     },
     debug: true
     // postProcessResponse: (result, _) => {
@@ -43,10 +43,10 @@ export = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: __dirname + '/app/config/db/migrations'
+      directory: __dirname + '/src/config/db/migrations'
     },
     seeds: {
-      directory: __dirname + '/app/config/db/seeds'
+      directory: __dirname + '/src/config/db/seeds'
     }
   },
 
@@ -63,10 +63,10 @@ export = {
     },
     migrations: {
       tableName: 'knex_migrations',
-      directory: __dirname + '/app/config/db/migrations'
+      directory: __dirname + '/src/config/db/migrations'
     },
     seeds: {
-      directory: __dirname + '/app/config/db/seeds'
+      directory: __dirname + '/src/config/db/seeds'
     }
   }
 } as Knex.Config

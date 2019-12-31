@@ -1,6 +1,6 @@
 import { GraphQLObjectType, GraphQLList } from 'graphql'
 import { builder } from 'objection-graphql'
-import User from '@app/users/user.model'
+import User from '@app/features/user/user.model'
 import forOwn from 'lodash/forOwn'
 
 const graphQlSchema = builder()

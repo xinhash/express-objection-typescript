@@ -12,9 +12,5 @@ setupDB(process.env.NODE_ENV as NODE_ENV)
 
 // start the express server
 server.listen(port, async () => {
-  if (process.env.NODE_ENV !== 'production') {
-    const listEndpoints = await import('express-list-endpoints')
-    console.log(listEndpoints.default(server))
-  }
   console.log(`server started at http://localhost:${port}`)
 })

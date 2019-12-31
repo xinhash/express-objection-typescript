@@ -7,9 +7,9 @@ import { cloneDeep } from 'lodash'
 import request from 'supertest'
 
 describe('Authentication endpoints', () => {
-  let server
   let knex
   let authToken
+  let verificationId
   const authUrl = '/api/v1/auth'
   const userCreds = {
     email: 'test@test.com',
@@ -18,23 +18,15 @@ describe('Authentication endpoints', () => {
   }
 
   beforeAll(async done => {
-    //set TEST env
-    process.env.JWT_SECRET = 'secret'
-    const port = '8081'
-    // setup db
     knex = setupDB(NODE_ENV.staging, true)
     await knex.migrate.rollback()
     await knex.migrate.latest()
-    //load app
-    server = app.listen(port, () => {
-      done()
-    })
+    done()
   })
 
   afterAll(async done => {
     // Closing the DB connection allows Jest to exit successfully.
     await knex.destroy()
-    server.close()
     done()
   })
 
@@ -46,6 +38,8 @@ describe('Authentication endpoints', () => {
       .send(userCreds)
     expect(res.status).toEqual(201)
     expect(res.body).toHaveProperty('message')
+    expect(res.body).toHaveProperty('verificationId')
+    verificationId = res.body.verificationId
   })
 
   it('should not register user with missing details', async () => {
@@ -58,9 +52,16 @@ describe('Authentication endpoints', () => {
       .set('Content-Type', 'application/json')
       .set('Acccept', 'application/json')
       .send(newUserCreds)
-    expect(res.status).toEqual(422)
-    expect(res.body).toHaveProperty('errors')
-    expect(res.body.errors.join(',')).toContain(randomKeyToDelete)
+    expect(res.status).not.toBe(201)
+  })
+
+  it('should verify user', async () => {
+    const res = await request(app)
+      .get(`${authUrl}/verify/${verificationId}`)
+      .set('Content-Type', 'application/json')
+      .set('Acccept', 'application/json')
+    expect(res.status).toEqual(200)
+    expect(res.body).toHaveProperty('message')
   })
 
   it('should login user and provide them a token', async () => {

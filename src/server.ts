@@ -26,7 +26,7 @@ app.use(
       return null
     }
   }).unless({
-    path: ['/user/register', '/user/login']
+    path: ['/user/register', '/user/login', '/user/verify']
   })
 )
 

@@ -1,5 +1,5 @@
 import User from './user.model'
-
+// import snakeCaseKeys from 'snakecase-keys'
 export default class UserRepository {
   public static async createUser(userObj: User) {
     const user = await User.query().insert(userObj)
@@ -7,6 +7,15 @@ export default class UserRepository {
       return user
     } else {
       throw new Error('Unable to create user')
+    }
+  }
+
+  public static async updateUserById(id: string, userObj: Partial<User>) {
+    const user = await User.query().patchAndFetchById(id, userObj)
+    if (user instanceof User) {
+      return user
+    } else {
+      throw new Error('Unable to update user')
     }
   }
 

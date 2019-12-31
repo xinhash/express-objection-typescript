@@ -11,6 +11,11 @@ content-type: application/json
 }
 
 ###
+// @name verify
+GET {{url}}/auth/verify/{{register.response.body.$.verificationId}}
+content-type: application/json
+
+###
 # @name login
 POST {{url}}/auth/login
 content-type: application/json
